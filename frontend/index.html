@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NexiHealth - HealthConnect</title>
+    <link rel="stylesheet" href="/static/style.css?v=12">
+</head>
+<body>
+
+    <!-- Header e barra di navigazione responsive (Sticky Desktop, Fisso compatto su Mobile) -->
+    <header class="top-bar">
+        <div class="top-bar-left">
+            <div class="logo">
+                <a href="javascript:void(0)" onclick="navigaHome()" class="logo-link">
+                    <h1>NexiHealth - HealthConnect</h1>
+                </a>
+            </div>
+        </div>
+
+        <div id="navContainer" class="nav-container">
+            <nav class="nav-links top-bar-center">
+                <button class="nav-btn" onclick="navigaHome()">Home</button>
+                <button id="navBooking" class="nav-btn" onclick="gestisciAccessoPrenotazione()">Prenota Visita</button>
+                <button id="navRegister" class="nav-btn" onclick="mostraVista('view-register')">Registrati</button>
+                <button id="navProfile" class="nav-btn hidden" onclick="mostraVista('view-profile')">Le Mie Prenotazioni</button>
+                <button id="navDoctor" class="nav-btn hidden" onclick="mostraVista('view-doctor')">Agenda Medica</button>
+                <button id="navAdmin" class="nav-btn hidden" onclick="mostraVista('view-admin')">Pannello Admin</button>
+            </nav>
+
+            <div class="mobile-user-menu">
+                <div id="authButtonsMobile">
+                    <button id="btnLoginModalMobile" class="btn-secondary" onclick="apriModaleLoginStandard()">Accedi</button>
+                    <div id="userMenuMobile" class="user-info hidden">
+                        <span id="userNameDisplayMobile"></span>
+                        <button class="btn-warning" onclick="apriModaleCambioPassword()">Cambio Password</button>
+                        <button class="btn-danger" onclick="effettuaLogout()">Logout</button>
+                    </div>
+                    <!-- Lucchetto Admin collocato nel menu a scomparsa per smartphone -->
+                    <button id="btnAdminLockMobile" class="btn-admin-mobile-drawer">🔒 Accesso Amministratore</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="header-controls top-bar-right">
+            <div id="authButtons" class="desktop-auth">
+                <button id="btnLoginModal" class="btn-secondary">Accedi</button>
+                <div id="userMenu" class="user-info hidden">
+                    <span id="userNameDisplay"></span>
+                    <button id="btnCambioPasswordModal" class="btn-warning">Cambio Password</button>
+                    <button id="btnLogout" class="btn-danger">Logout</button>
+                </div>
+            </div>
+
+            <!-- Lucchetto visibile solo su desktop -->
+            <button id="btnAdminLock" class="btn-padlock" title="Accesso Amministratore">🔒</button>
+
+            <!-- Pulsante hamburger sempre allineato e pulito -->
+            <button id="hamburgerBtn" class="hamburger-btn" aria-label="Menu">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </button>
+        </div>
+    </header>
+
+    <div id="msg" class="alert hidden"></div>
+
+    <!-- Modale di login -->
+    <div id="loginModal" class="modal hidden">
+        <div class="modal-content">
+            <span id="closeModal" class="close">&times;</span>
+            <h2 id="loginModalTitle">Accesso Area Riservata</h2>
+            <div id="loginErrorMsg" class="alert alert-error hidden" style="margin-bottom: 15px;"></div>
+            <form id="formLogin">
+                <input type="text" id="loginIdentificativo" placeholder="Codice Fiscale o Email" required>
+                <input type="password" id="loginPassword" placeholder="Password" required>
+                <div class="form-group" id="loginTypeGroup">
+                    <label for="loginType">Tipo Utente:</label>
+                    <select id="loginType">
+                        <option value="paziente">Paziente</option>
+                        <option value="dottore">Dottore</option>
+                    </select>
+                </div>
+                <button type="submit">Entra</button>
+            </form>
+            <div class="register-link-container" id="registerLinkContainer">
+                <span>Non sei ancora registrato? </span>
+                <a href="#" id="linkVaiARegistrazione">Registrati ora</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modale cambio password -->
+    <div id="changePasswordModal" class="modal hidden">
+        <div class="modal-content">
+            <span id="closePasswordModal" class="close">&times;</span>
+            <h2>Cambio Password</h2>
+            <div id="changePasswordErrorMsg" class="alert alert-error hidden" style="margin-bottom: 15px;"></div>
+            <form id="formChangePassword">
+                <input type="password" id="oldPassword" placeholder="Vecchia Password" required>
+                <input type="password" id="newPassword" placeholder="Nuova Password" required>
+                <input type="password" id="confirmNewPassword" placeholder="Conferma Nuova Password" required>
+                <button type="submit">Aggiorna Password</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modale modifica paziente (admin) -->
+    <div id="editPazienteModal" class="modal hidden">
+        <div class="modal-content">
+            <span id="closeEditPazienteModal" class="close">&times;</span>
+            <h2>Modifica / Nuovo Paziente</h2>
+            <div id="editPazienteErrorMsg" class="alert alert-error hidden" style="margin-bottom: 15px;"></div>
+            <form id="formEditPaziente">
+                <input type="hidden" id="editPazienteId">
+                <input type="text" id="editNome" placeholder="Nome" required>
+                <input type="text" id="cognome" placeholder="Cognome" required>
+                <input type="text" id="editCf" placeholder="Codice Fiscale" required>
+                <input type="email" id="editEmail" placeholder="Email" required>
+                <input type="tel" id="editTelefono" placeholder="Telefono" required>
+                <button type="submit">Salva Modifiche</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modale modifica prenotazione -->
+    <div id="editPrenotazioneModal" class="modal hidden">
+        <div class="modal-content">
+            <span id="closeEditPrenotazioneModal" class="close">&times;</span>
+            <h2>Modifica Prenotazione</h2>
+            <form id="formEditPrenotazione">
+                <input type="hidden" id="editPrenotazioneId">
+                <input type="hidden" id="editPrenotazionePazienteId">
+                <input type="hidden" id="editDottoreId">
+
+                <div class="form-group">
+                    <label for="editDottoreNomeCompleto">Dottore Assegnato:</label>
+                    <input type="text" id="editDottoreNomeCompleto" readonly disabled style="background-color: #edf2f7; cursor: not-allowed;">
+                </div>
+
+                <label for="editSpecializzazione">Specializzazione:</label>
+                <input type="text" id="editSpecializzazione" required>
+
+                <label for="editDataOra">Data e Ora:</label>
+                <input type="datetime-local" id="editDataOra" required>
+
+                <div class="form-group">
+                    <label for="editStatoPrenotazione">Stato Prenotazione:</label>
+                    <select id="editStatoPrenotazione" required>
+                        <option value="In attesa di conferma">In attesa di conferma</option>
+                        <option value="Confermata">Confermata</option>
+                        <option value="Completata">Completata</option>
+                        <option value="Annullata">Annullata</option>
+                    </select>
+                </div>
+
+                <label for="editNote">Note:</label>
+                <input type="text" id="editNote">
+                <button type="submit">Salva Modifiche</button>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Modale modifica / nuovo dottore (admin) con campo Codice Fiscale -->
+    <div id="editDottoreModal" class="modal hidden">
+        <div class="modal-content">
+            <span id="closeEditDottoreModal" class="close">&times;</span>
+            <h2 id="titleEditDottoreModal">Nuovo / Modifica Dottore</h2>
+            <div id="editDottoreErrorMsg" class="alert alert-error hidden" style="margin-bottom: 15px;"></div>
+            <form id="formEditDottore">
+                <input type="hidden" id="editDottoreId">
+                <input type="text" id="editDottoreNome" placeholder="Nome" required>
+                <input type="text" id="editDottoreCognome" placeholder="Cognome" required>
+                <input type="text" id="editDottoreCf" placeholder="Codice Fiscale" required>
+                <input type="text" id="editDottoreSpecializzazione" placeholder="Specializzazione" required>
+                <input type="email" id="editDottoreEmail" placeholder="Email" required>
+                <input type="tel" id="editDottoreTelefono" placeholder="Telefono" required>
+                <input type="password" id="editDottorePassword" placeholder="Password (lascia vuoto per non modificare in edit)">
+                <button type="submit">Salva Dottore</button>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Modale conferma eliminazione -->
+    <div id="confirmDeleteModal" class="modal hidden">
+        <div class="modal-content">
+            <span id="closeConfirmDeleteModal" class="close">&times;</span>
+            <h2 class="text-danger">Attenzione: Operazione Irreversibile</h2>
+            <div class="alert alert-error" style="margin: 15px 0;">
+                <p>Sei sicuro di voler eliminare questo paziente?</p>
+                <p><strong>L'azione eliminerà permanentemente il paziente e TUTTE le sue prenotazioni associate a cascata.</strong></p>
+            </div>
+            <div class="modal-actions-confirm">
+                <button id="btnCancelDelete" class="btn-secondary">Annulla</button>
+                <button id="btnConfirmDelete" class="btn-danger">Conferma Eliminazione</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modale di Anteprima Vetrina (Preview Popup) -->
+    <div id="previewVetrinaModal" class="modal hidden">
+        <div class="modal-content modal-large">
+            <span id="closePreviewVetrinaModal" class="close" onclick="chiudiModaleAnteprimaVetrina()">&times;</span>
+            <h2>Anteprima Live: Vetrina e Statistiche Home</h2>
+            <p class="text-muted" style="margin-bottom: 20px;">Così appariranno le statistiche e i contatti ai pazienti e ai visitatori nella Landing Page principale.</p>
+            
+            <div class="showcase-stats-grid" style="margin-bottom: 25px;">
+                <div class="stat-card">
+                    <span class="stat-icon">🏥</span>
+                    <span class="stat-number" id="prevKpi1Num">15.000+</span>
+                    <span class="stat-label" id="prevKpi1Lbl">Pazienti Assistiti</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-icon">⭐</span>
+                    <span class="stat-number" id="prevKpi2Num">98%</span>
+                    <span class="stat-label" id="prevKpi2Lbl">Soddisfazione Pazienti</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-icon">⏱️</span>
+                    <span class="stat-number" id="prevKpi3Num">&lt; 48h</span>
+                    <span class="stat-label" id="prevKpi3Lbl">Tempo Medio di Accesso</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-icon">🔬</span>
+                    <span class="stat-number" id="prevKpi4Num">100%</span>
+                    <span class="stat-label" id="prevKpi4Lbl">Refertazione Digitale</span>
+                </div>
+            </div>
+
+            <div class="preview-footer-box">
+                <h4>Riepilogo Footer Clinica</h4>
+                <p><strong>Orari di Apertura:</strong> <span id="prevOrari">Lunedì - Venerdì: 08:00 - 20:00 | Sabato: 08:30 - 14:00</span></p>
+                <p><strong>Telefono Contatto:</strong> <span id="prevTelefono">+39 081 123 4567</span></p>
+                <p><strong>Email Istituzionale:</strong> <span id="prevEmail">info@nexihealth.it</span></p>
+            </div>
+
+            <div class="modal-actions-confirm">
+                <button type="button" class="btn-secondary" onclick="chiudiModaleAnteprimaVetrina()">Chiudi Anteprima</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Vista 1: Home page Vetrina per Pazienti e Visitatori -->
+    <section id="view-home" class="view-section">
+        <div class="showcase-hero card full-width">
+            <div class="hero-badge">Centro Medico & Diagnostico Polispecialistico</div>
+            <h2>Salute e Diagnostica all'Avanguardia al Tuo Servizio</h2>
+            <p>NexiHealth è il punto di riferimento per visite mediche specialistiche, percorsi di prevenzione e refertazione rapida con standard qualitativi di livello europeo.</p>
+            <div class="hero-actions">
+                <button class="btn-primary-lg" onclick="gestisciAccessoPrenotazione()">Prenota una Visita Ora</button>
+                <a href="#reparti-section" class="btn-outline-lg">Scopri i Reparti</a>
+            </div>
+        </div>
+
+        <div class="showcase-stats-grid">
+            <div class="stat-card">
+                <span class="stat-icon">🏥</span>
+                <span class="stat-number" id="homeKpi1Num">15.000+</span>
+                <span class="stat-label" id="homeKpi1Lbl">Pazienti Assistiti</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-icon">⭐</span>
+                <span class="stat-number" id="homeKpi2Num">98%</span>
+                <span class="stat-label" id="homeKpi2Lbl">Soddisfazione Pazienti</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-icon">⏱️</span>
+                <span class="stat-number" id="homeKpi3Num">&lt; 48h</span>
+                <span class="stat-label" id="homeKpi3Lbl">Tempo Medio di Accesso</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-icon">🔬</span>
+                <span class="stat-number" id="homeKpi4Num">100%</span>
+                <span class="stat-label" id="homeKpi4Lbl">Refertazione Digitale</span>
+            </div>
+        </div>
+
+        <!-- Sezione Reparti & Specialità Mediche: Dinamica -->
+        <div id="reparti-section" class="showcase-section">
+            <div class="section-header">
+                <h3>Reparti & Specialità Mediche</h3>
+                <p>Un team multidisciplinare pronto a seguire ogni fase di diagnosi, cura e follow-up.</p>
+            </div>
+            <div id="departmentsGridContainer" class="departments-grid"></div>
+        </div>
+
+        <div class="showcase-section">
+            <div class="section-header">
+                <h3>I Nostri Medici Specialisti</h3>
+                <p>Professionisti qualificati con anni di esperienza clinica ed ospedaliera.</p>
+            </div>
+            <div id="vetrinaDottoriContainer" class="doctors-showcase-grid"></div>
+        </div>
+
+        <footer class="showcase-footer card full-width">
+            <div class="footer-grid">
+                <div>
+                    <h4>Centro Medico NexiHealth</h4>
+                    <p>Eccellenza nella cura, rapidità nella prenotazione e gestione digitale integrata dei referti specialistici.</p>
+                </div>
+                <div>
+                    <h4>Orari di Apertura</h4>
+                    <p id="homeOrariApertura">Lunedì - Venerdì: 08:00 - 20:00 | Sabato: 08:30 - 14:00</p>
+                    <p>Domenica: Chiuso (Reperibilità urgenze)</p>
+                </div>
+                <div>
+                    <h4>Contatti e Sede</h4>
+                    <p>📍 Via Roma, 120 - Napoli (NA)</p>
+                    <p id="homeTelefonoContatto">📞 Centralino: +39 081 123 4567</p>
+                    <p id="homeEmailContatto">✉️ Email: info@nexihealth.it</p>
+                </div>
+            </div>
+        </footer>
+    </section>
+
+    <!-- Vista 1B: Home page specifica per il Medico -->
+    <section id="view-home-doctor" class="view-section hidden">
+        <div class="card full-width doctor-dashboard-header">
+            <h2 id="doctorWelcomeTitle">Benvenuto/a Dottore</h2>
+            <p id="doctorSpecializationSubtitle" class="text-muted">Area Operativa Medica - NexiHealth</p>
+            
+            <div class="dashboard-kpi-grid">
+                <div class="kpi-card kpi-warning">
+                    <span class="kpi-num" id="kpiAttesa">0</span>
+                    <span class="kpi-label">In Attesa di Conferma</span>
+                </div>
+                <div class="kpi-card kpi-success">
+                    <span class="kpi-num" id="kpiConfermate">0</span>
+                    <span class="kpi-label">Visite Confermate</span>
+                </div>
+                <div class="kpi-card kpi-info">
+                    <span class="kpi-num" id="kpiCompletate">0</span>
+                    <span class="kpi-label">Visite Completate</span>
+                </div>
+                <div class="kpi-card kpi-primary">
+                    <span class="kpi-num" id="kpiPazienti">0</span>
+                    <span class="kpi-label">Pazienti Assegnati</span>
+                </div>
+            </div>
+
+            <div class="dashboard-actions">
+                <button class="btn-primary-lg" onclick="mostraVista('view-doctor'); mostraTabDottore('tab-doctor-agenda');">Vai all'Agenda Visite</button>
+                <button class="btn-secondary" onclick="mostraVista('view-doctor'); mostraTabDottore('tab-doctor-pazienti');">Consulta Elenco Pazienti</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Vista 1C: Home page specifica per l'Amministratore con le 4 Scorciatoie Tab -->
+    <section id="view-home-admin" class="view-section hidden">
+        <div class="card full-width doctor-dashboard-header">
+            <h2>Pannello di Controllo Generale</h2>
+            <p class="text-muted">Amministrazione Sistema | Panoramica Globale Centro Medico NexiHealth</p>
+            
+            <div class="dashboard-kpi-grid">
+                <div class="kpi-card kpi-primary">
+                    <span class="kpi-num" id="kpiAdminPazienti">0</span>
+                    <span class="kpi-label">Pazienti Registrati</span>
+                </div>
+                <div class="kpi-card kpi-info">
+                    <span class="kpi-num" id="kpiAdminDottori">0</span>
+                    <span class="kpi-label">Dottori nel Centro</span>
+                </div>
+                <div class="kpi-card kpi-success">
+                    <span class="kpi-num" id="kpiAdminPrenotazioni">0</span>
+                    <span class="kpi-label">Prenotazioni Totali</span>
+                </div>
+                <div class="kpi-card kpi-warning">
+                    <span class="kpi-num" id="kpiAdminInAttesa">0</span>
+                    <span class="kpi-label">In Attesa di Conferma</span>
+                </div>
+            </div>
+
+            <div class="dashboard-actions">
+                <button class="btn-primary" onclick="vaiATabAdmin('tab-pazienti')">Gestione Pazienti</button>
+                <button class="btn-primary" onclick="vaiATabAdmin('tab-prenotazioni')">Gestione Prenotazioni</button>
+                <button class="btn-primary" onclick="vaiATabAdmin('tab-dottori')">Gestione Dottori</button>
+                <button class="btn-primary" onclick="vaiATabAdmin('tab-vetrina-gestione')">Gestione Vetrina</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Vista 2: Registrazione Nuovo Paziente -->
+    <section id="view-register" class="view-section hidden">
+        <div class="card max-width-center">
+            <h2>Registrazione Nuovo Paziente</h2>
+            <div id="alertAvvisoPrenotazione" class="alert alert-info hidden">
+                Per prenotare una visita è necessario registrarsi ed accedere al sistema.
+            </div>
+            <div id="registerErrorMsg" class="alert alert-error hidden" style="margin-bottom: 15px;"></div>
+            <form id="formPaziente">
+                <input type="text" id="nome" placeholder="Nome" required>
+                <input type="text" id="cognome" placeholder="Cognome" required>
+                <input type="text" id="cf" placeholder="Codice Fiscale" required>
+                <input type="email" id="email" placeholder="Email" required>
+                <input type="tel" id="telefono" placeholder="Telefono" required>
+                <input type="password" id="password" placeholder="Password" required>
+                <button type="submit">Registra Paziente</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Vista 3: Creazione prenotazione con Dropdown Specializzazione e Dottori dinamica -->
+    <section id="view-booking" class="view-section hidden">
+        <div class="card max-width-center">
+            <h2>Nuova Prenotazione Visita</h2>
+            <form id="formPrenotazione">
+                <div id="boxSelectPazienteAdmin" class="hidden">
+                    <label for="pazienteSelect">Seleziona Paziente destinatario:</label>
+                    <select id="pazienteSelect">
+                        <option value="">-- Seleziona Paziente --</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="specializzazioneSelect">Specializzazione / Branca Medica:</label>
+                    <select id="specializzazioneSelect" required>
+                        <option value="">-- Seleziona Specializzazione --</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="dottoreSelect">Seleziona Medico Specialista:</label>
+                    <select id="dottoreSelect" required>
+                        <option value="">-- Seleziona Medico --</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="dataOra">Data e Ora:</label>
+                    <input type="datetime-local" id="dataOra" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="note">Note (opzionale):</label>
+                    <input type="text" id="note" placeholder="Eventuali sintomatologie o note di visita">
+                </div>
+
+                <button type="submit">Conferma Prenotazione</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Vista 4: Area riservata paziente -->
+    <section id="view-profile" class="view-section hidden">
+        <div class="card full-width">
+            <div class="header-with-action">
+                <h2>Le Tue Prenotazioni Visite</h2>
+                <div class="action-buttons">
+                    <button class="btn-mobile-filter" onclick="apriMenuFiltroMobile('tabellaMiePrenotazioni', event)">🔍 Filtra</button>
+                    <button class="btn-reset-filters hidden" onclick="resetFiltriTabella('tabellaMiePrenotazioni')">Reset Filtri</button>
+                </div>
+            </div>
+            <div class="table-responsive">
+                <table id="tabellaMiePrenotazioni">
+                    <thead>
+                        <tr>
+                            <th>ID Visita</th>
+                            <th>Specializzazione</th>
+                            <th>Dottore</th>
+                            <th>Data e Ora</th>
+                            <th>Stato</th>
+                            <th>Note</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- Vista Dottore: Agenda Medica e Gestione Pazienti a Tab -->
+    <section id="view-doctor" class="view-section hidden">
+        <div class="admin-tabs-nav">
+            <button id="btnTabDoctorAgenda" class="tab-btn active" onclick="mostraTabDottore('tab-doctor-agenda')">Agenda Appuntamenti</button>
+            <button id="btnTabDoctorPazienti" class="tab-btn" onclick="mostraTabDottore('tab-doctor-pazienti')">Gestione Pazienti</button>
+        </div>
+
+        <div id="tab-doctor-agenda" class="doctor-tab-content">
+            <div class="card full-width">
+                <div class="header-with-action">
+                    <h2>Agenda Appuntamenti - Dottore</h2>
+                    <div class="action-buttons">
+                        <button class="btn-mobile-filter" onclick="apriMenuFiltroMobile('tabellaAgendaDottore', event)">🔍 Filtra</button>
+                        <button class="btn-reset-filters hidden" onclick="resetFiltriTabella('tabellaAgendaDottore')">Reset Filtri</button>
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table id="tabellaAgendaDottore">
+                        <thead>
+                            <tr>
+                                <th>ID Visita</th>
+                                <th>Paziente</th>
+                                <th>Specializzazione</th>
+                                <th>Data e Ora</th>
+                                <th>Stato</th>
+                                <th>Note</th>
+                                <th>Azioni</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div id="tab-doctor-pazienti" class="doctor-tab-content hidden">
+            <div class="card full-width">
+                <div class="header-with-action">
+                    <h2>Elenco Pazienti Assegnati</h2>
+                    <div class="action-buttons">
+                        <button class="btn-mobile-filter" onclick="apriMenuFiltroMobile('tabellaPazientiDottore', event)">🔍 Filtra</button>
+                        <button class="btn-reset-filters hidden" onclick="resetFiltriTabella('tabellaPazientiDottore')">Reset Filtri</button>
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table id="tabellaPazientiDottore">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nome Cognome</th>
+                                <th>Codice Fiscale</th>
+                                <th>Email</th>
+                                <th>Telefono</th>
+                                <th>Azioni</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Vista 5: Pannello Admin con Tab Gestione Vetrina -->
+    <section id="view-admin" class="view-section hidden">
+        <div class="admin-tabs-nav">
+            <button id="btnTabAdminPazienti" class="tab-btn active" onclick="mostraTabAdmin('tab-pazienti')">Gestione Pazienti</button>
+            <button id="btnTabAdminPrenotazioni" class="tab-btn" onclick="mostraTabAdmin('tab-prenotazioni')">Gestione Prenotazioni</button>
+            <button id="btnTabAdminDottori" class="tab-btn" onclick="mostraTabAdmin('tab-dottori')">Gestione Dottori</button>
+            <button id="btnTabAdminVetrina" class="tab-btn" onclick="mostraTabAdmin('tab-vetrina-gestione')">Gestione Vetrina</button>
+        </div>
+
+        <div id="tab-pazienti" class="admin-tab-content">
+            <div class="card full-width">
+                <div class="header-with-action">
+                    <h2>Elenco Pazienti Registrati</h2>
+                    <div class="action-buttons">
+                        <button class="btn-mobile-filter" onclick="apriMenuFiltroMobile('tabellaPazienti', event)">🔍 Filtra</button>
+                        <button class="btn-reset-filters hidden" onclick="resetFiltriTabella('tabellaPazienti')">Reset Filtri</button>
+                        <button class="btn-primary" onclick="apriModalNuovoPazienteAdmin()">+ Nuovo Paziente</button>
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table id="tabellaPazienti">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nome Cognome</th>
+                                <th>Codice Fiscale</th>
+                                <th>Email</th>
+                                <th>Telefono</th>
+                                <th>Azioni</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div id="tab-prenotazioni" class="admin-tab-content hidden">
+            <div class="card full-width">
+                <div class="header-with-action">
+                    <h2>Elenco Globale Prenotazioni</h2>
+                    <div class="action-buttons">
+                        <button class="btn-mobile-filter" onclick="apriMenuFiltroMobile('tabellaPrenotazioni', event)">🔍 Filtra</button>
+                        <button class="btn-reset-filters hidden" onclick="resetFiltriTabella('tabellaPrenotazioni')">Reset Filtri</button>
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table id="tabellaPrenotazioni">
+                        <thead>
+                            <tr>
+                                <th>ID Visita</th>
+                                <th>Paziente</th>
+                                <th>Specializzazione</th>
+                                <th>Dottore</th>
+                                <th>Data e Ora</th>
+                                <th>Stato</th>
+                                <th>Note</th>
+                                <th>Azioni</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div id="tab-dottori" class="admin-tab-content hidden">
+            <div class="card full-width">
+                <div class="header-with-action">
+                    <h2>Elenco Dottori Registrati</h2>
+                    <div class="action-buttons">
+                        <button class="btn-mobile-filter" onclick="apriMenuFiltroMobile('tabellaDottori', event)">🔍 Filtra</button>
+                        <button class="btn-reset-filters hidden" onclick="resetFiltriTabella('tabellaDottori')">Reset Filtri</button>
+                        <button class="btn-primary" onclick="apriModalNuovoDottoreAdmin()">+ Nuovo Dottore</button>
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table id="tabellaDottori">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nome Cognome</th>
+                                <th>Specializzazione</th>
+                                <th>Email</th>
+                                <th>Telefono</th>
+                                <th>Azioni</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB: Gestione Vetrina Clinica & KPI -->
+        <div id="tab-vetrina-gestione" class="admin-tab-content hidden">
+            <div class="card full-width">
+                <div class="header-with-action">
+                    <div>
+                        <h2>Personalizzazione Vetrina Clinica & KPI</h2>
+                        <p class="text-muted" style="margin-bottom: 0;">Aggiorna le statistiche e i dati promozionali visualizzati nella Landing Page pubblica.</p>
+                    </div>
+                    <button type="button" class="btn-info" onclick="apriModaleAnteprimaVetrina()">👁️ Anteprima Live Vetrina</button>
+                </div>
+
+                <form id="formGestioneVetrina" onsubmit="event.preventDefault(); salvaImpostazioniVetrinaAdmin();">
+                    <h3 style="color: #0f3460; margin: 15px 0 10px 0; font-size: 1.1rem; border-bottom: 2px solid #ebf8ff; padding-bottom: 5px;">
+                        Statistiche & Metriche di Eccellenza (Home Page)
+                    </h3>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px;">
+                        <!-- Card 1 -->
+                        <div class="card-edit-group">
+                            <span class="group-title">Card 1: Pazienti Assistiti 🏥</span>
+                            <div class="form-group">
+                                <label>Valore Numerico (es. 15.000+):</label>
+                                <input type="text" id="editKpi1Num" value="15.000+" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Didascalia / Etichetta:</label>
+                                <input type="text" id="editKpi1Lbl" value="Pazienti Assistiti" required>
+                            </div>
+                        </div>
+
+                        <!-- Card 2 -->
+                        <div class="card-edit-group">
+                            <span class="group-title">Card 2: Soddisfazione Pazienti ⭐</span>
+                            <div class="form-group">
+                                <label>Valore Percentuale (es. 98%):</label>
+                                <input type="text" id="editKpi2Num" value="98%" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Didascalia / Etichetta:</label>
+                                <input type="text" id="editKpi2Lbl" value="Soddisfazione Pazienti" required>
+                            </div>
+                        </div>
+
+                        <!-- Card 3 -->
+                        <div class="card-edit-group">
+                            <span class="group-title">Card 3: Tempo Medio di Accesso ⏱️</span>
+                            <div class="form-group">
+                                <label>Tempo / Tempistica (es. &lt; 48h):</label>
+                                <input type="text" id="editKpi3Num" value="< 48h" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Didascalia / Etichetta:</label>
+                                <input type="text" id="editKpi3Lbl" value="Tempo Medio di Accesso" required>
+                            </div>
+                        </div>
+
+                        <!-- Card 4 -->
+                        <div class="card-edit-group">
+                            <span class="group-title">Card 4: Refertazione Digitale 🔬</span>
+                            <div class="form-group">
+                                <label>Valore / Copertura (es. 100%):</label>
+                                <input type="text" id="editKpi4Num" value="100%" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Didascalia / Etichetta:</label>
+                                <input type="text" id="editKpi4Lbl" value="Refertazione Digitale" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h3 style="color: #0f3460; margin: 25px 0 10px 0; font-size: 1.1rem; border-bottom: 2px solid #ebf8ff; padding-bottom: 5px;">
+                        Informazioni di Contatto & Servizio (Footer Centro Medico)
+                    </h3>
+                    <div class="form-group">
+                        <label>Footer: Orari di Apertura al Pubblico:</label>
+                        <input type="text" id="editOrariApertura" value="Lunedì - Venerdì: 08:00 - 20:00 | Sabato: 08:30 - 14:00" required>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; margin-top: 10px;">
+                        <div class="form-group">
+                            <label>Footer: Recapito Telefonico / Centralino:</label>
+                            <input type="text" id="editTelefonoContatto" value="+39 081 123 4567" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Footer: Email Istituzionale di Contatto:</label>
+                            <input type="email" id="editEmailContatto" value="info@nexihealth.it" required>
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 25px; display: flex; gap: 12px; flex-wrap: wrap;">
+                        <button type="button" class="btn-primary" style="padding: 10px 24px;" onclick="salvaImpostazioniVetrinaAdmin()">Salva Informazioni Vetrina</button>
+                        <button type="button" class="btn-secondary" onclick="apriModaleAnteprimaVetrina()">Visualizza Anteprima</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Vista 6: Dettaglio paziente (SPA Admin) -->
+    <section id="view-dettaglio-paziente" class="view-section hidden">
+        <div class="card full-width">
+            <div class="header-with-action">
+                <h2>Scheda Dettaglio Paziente</h2>
+                <div class="action-buttons">
+                    <button class="btn-mobile-filter" onclick="apriMenuFiltroMobile('tabellaDettaglioPrenotazioniPage', event)">🔍 Filtra</button>
+                    <button class="btn-reset-filters hidden" onclick="resetFiltriTabella('tabellaDettaglioPrenotazioniPage')">Reset Filtri</button>
+                    <button class="btn-secondary" onclick="mostraVista('view-admin')">&larr; Torna al Pannello Admin</button>
+                </div>
+            </div>
+            <div id="dettaglioInfoPazientePage" class="dettaglio-box"></div>
+            <h3>Prenotazioni del Paziente</h3>
+            <div class="table-responsive">
+                <table id="tabellaDettaglioPrenotazioniPage">
+                    <thead>
+                        <tr>
+                            <th>ID Visita</th>
+                            <th>Specializzazione</th>
+                            <th>Dottore</th>
+                            <th>Data e Ora</th>
+                            <th>Stato</th>
+                            <th>Note</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- Vista 7: Dettaglio medico (SPA Admin) -->
+    <section id="view-dettaglio-medico" class="view-section hidden">
+        <div class="card full-width">
+            <div class="header-with-action">
+                <h2>Scheda Dettaglio Medico</h2>
+                <div class="action-buttons">
+                    <button class="btn-mobile-filter" onclick="apriMenuFiltroMobile('tabellaDettaglioPrenotazioniMedicoPage', event)">🔍 Filtra</button>
+                    <button class="btn-reset-filters hidden" onclick="resetFiltriTabella('tabellaDettaglioPrenotazioniMedicoPage')">Reset Filtri</button>
+                    <button class="btn-secondary" onclick="mostraVista('view-admin')">&larr; Torna al Pannello Admin</button>
+                </div>
+            </div>
+            <div id="dettaglioInfoMedicoPage" class="dettaglio-box"></div>
+            <h3>Prenotazioni / Pazienti Associati</h3>
+            <div class="table-responsive">
+                <table id="tabellaDettaglioPrenotazioniMedicoPage">
+                    <thead>
+                        <tr>
+                            <th>ID Visita</th>
+                            <th>ID Paziente</th>
+                            <th>Specializzazione</th>
+                            <th>Data e Ora</th>
+                            <th>Stato</th>
+                            <th>Note</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- Vista 8: Dettaglio Paziente visto dal Dottore -->
+    <section id="view-dettaglio-paziente-dottore" class="view-section hidden">
+        <div class="card full-width">
+            <div class="header-with-action">
+                <h2>Scheda Paziente Assegnato</h2>
+                <div class="action-buttons">
+                    <button class="btn-mobile-filter" onclick="apriMenuFiltroMobile('tabellaDettaglioPrenotazioniPazienteDottorePage', event)">🔍 Filtra</button>
+                    <button class="btn-reset-filters hidden" onclick="resetFiltriTabella('tabellaDettaglioPrenotazioniPazienteDottorePage')">Reset Filtri</button>
+                    <button class="btn-secondary" onclick="mostraVista('view-doctor')">&larr; Torna all'Area Dottore</button>
+                </div>
+            </div>
+            <div id="dettaglioInfoPazienteDottorePage" class="dettaglio-box"></div>
+            <h3>Prenotazioni a Tuo Carico</h3>
+            <div class="table-responsive">
+                <table id="tabellaDettaglioPrenotazioniPazienteDottorePage">
+                    <thead>
+                        <tr>
+                            <th>ID Visita</th>
+                            <th>Specializzazione</th>
+                            <th>Data e Ora</th>
+                            <th>Stato</th>
+                            <th>Note</th>
+                            <th>Azioni</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <footer class="global-minimal-footer">
+        <p>&copy; 2026 NexiHealth - HealthConnect. Piattaforma di Gestione Sanitaria Integrata.</p>
+    </footer>
+
+    <script type="module" src="/static/js/main.js?v=14"></script>
+</body>
+</html>

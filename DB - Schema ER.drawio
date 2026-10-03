@@ -1,0 +1,159 @@
+<mxfile host="app.diagrams.net">
+  <diagram name="Page-1" id="ZeVkHPXCkUfGMvsD1szl">
+    <mxGraphModel dx="1414" dy="757" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1654" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="admin_table" parent="1" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;fillColor=#1a498b;fontColor=#ffffff;strokeColor=#0f3460;" value="ADMIN" vertex="1">
+          <mxGeometry height="210" width="220" x="60" y="80" as="geometry" />
+        </mxCell>
+        <mxCell id="admin_col_1" parent="admin_table" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontStyle=4;" value="+ id: INTEGER [PK]" vertex="1">
+          <mxGeometry height="26" width="220" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="admin_col_2" parent="admin_table" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" value="+ username: VARCHAR [UK, NOT NULL]" vertex="1">
+          <mxGeometry height="26" width="220" y="56" as="geometry" />
+        </mxCell>
+        <mxCell id="admin_col_3" parent="admin_table" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" value="+ nome: VARCHAR [NOT NULL]" vertex="1">
+          <mxGeometry height="26" width="220" y="82" as="geometry" />
+        </mxCell>
+        <mxCell id="admin_col_4" parent="admin_table" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" value="+ cognome: VARCHAR [NOT NULL]" vertex="1">
+          <mxGeometry height="26" width="220" y="108" as="geometry" />
+        </mxCell>
+        <mxCell id="admin_col_5" parent="admin_table" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" value="+ email: VARCHAR [UK, NOT NULL]" vertex="1">
+          <mxGeometry height="26" width="220" y="134" as="geometry" />
+        </mxCell>
+        <mxCell id="admin_col_6" parent="admin_table" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" value="+ password: VARCHAR [NOT NULL, HASH]" vertex="1">
+          <mxGeometry height="26" width="220" y="160" as="geometry" />
+        </mxCell>
+        <mxCell id="admin_col_7" parent="admin_table" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" value="+ attivo: BOOLEAN [DEFAULT TRUE]" vertex="1">
+          <mxGeometry height="24" width="220" y="186" as="geometry" />
+        </mxCell>
+        <mxCell id="pazienti_table" parent="1" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;fillColor=#00b4d8;fontColor=#ffffff;strokeColor=#0f3460;" value="PAZIENTI" vertex="1">
+          <mxGeometry height="210" width="250" x="380" y="80" as="geometry" />
+        </mxCell>
+        <mxCell id="pazienti_col_1" parent="pazienti_table" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontStyle=4;" value="+ id: INTEGER [PK]" vertex="1">
+          <mxGeometry height="26" width="250" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="pazienti_col_2" parent="pazienti_table" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" value="+ nome: VARCHAR [NOT NULL]" vertex="1">
+          <mxGeometry height="26" width="250" y="56" as="geometry" />
+        </mxCell>
+        <mxCell id="pazienti_col_3" parent="pazienti_table" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" value="+ cognome: VARCHAR [NOT NULL]" vertex="1">
+          <mxGeometry height="26" width="250" y="82" as="geometry" />
+        </mxCell>
+        <mxCell id="pazienti_col_4" parent="pazienti_table" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" value="+ codice_fiscale: VARCHAR [UK, NOT NULL]" vertex="1">
+          <mxGeometry height="26" width="250" y="108" as="geometry" />
+        </mxCell>
+        <mxCell id="pazienti_col_5" parent="pazienti_table" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" value="+ email: VARCHAR [UK, NOT NULL]" vertex="1">
+          <mxGeometry height="26" width="250" y="134" as="geometry" />
+        </mxCell>
+        <mxCell id="pazienti_col_6" parent="pazienti_table" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" value="+ telefono: VARCHAR [NOT NULL]" vertex="1">
+          <mxGeometry height="26" width="250" y="160" as="geometry" />
+        </mxCell>
+        <mxCell id="pazienti_col_7" parent="pazienti_table" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" value="+ password: VARCHAR [NOT NULL, HASH]" vertex="1">
+          <mxGeometry height="24" width="250" y="186" as="geometry" />
+        </mxCell>
+        <mxCell id="dottori_table" parent="1" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;fillColor=#00b4d8;fontColor=#ffffff;strokeColor=#0f3460;" value="DOTTORI" vertex="1">
+          <mxGeometry height="240" width="260" x="1140" y="80" as="geometry" />
+        </mxCell>
+        <mxCell id="dottori_col_1" parent="dottori_table" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontStyle=4;" value="+ id: INTEGER [PK]" vertex="1">
+          <mxGeometry height="26" width="260" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="dottori_col_2" parent="dottori_table" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" value="+ nome: VARCHAR [NOT NULL]" vertex="1">
+          <mxGeometry height="26" width="260" y="56" as="geometry" />
+        </mxCell>
+        <mxCell id="dottori_col_3" parent="dottori_table" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" value="+ cognome: VARCHAR [NOT NULL]" vertex="1">
+          <mxGeometry height="26" width="260" y="82" as="geometry" />
+        </mxCell>
+        <mxCell id="dottori_col_4" parent="dottori_table" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" value="+ codice_fiscale: VARCHAR [UK, NOT NULL]" vertex="1">
+          <mxGeometry height="26" width="260" y="108" as="geometry" />
+        </mxCell>
+        <mxCell id="dottori_col_5" parent="dottori_table" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" value="+ specializzazione: VARCHAR [NOT NULL]" vertex="1">
+          <mxGeometry height="26" width="260" y="134" as="geometry" />
+        </mxCell>
+        <mxCell id="dottori_col_6" parent="dottori_table" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" value="+ email: VARCHAR [UK, NOT NULL]" vertex="1">
+          <mxGeometry height="26" width="260" y="160" as="geometry" />
+        </mxCell>
+        <mxCell id="dottori_col_7" parent="dottori_table" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" value="+ telefono: VARCHAR [NOT NULL]" vertex="1">
+          <mxGeometry height="26" width="260" y="186" as="geometry" />
+        </mxCell>
+        <mxCell id="dottori_col_8" parent="dottori_table" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" value="+ password: VARCHAR [NOT NULL, HASH]" vertex="1">
+          <mxGeometry height="28" width="260" y="212" as="geometry" />
+        </mxCell>
+        <mxCell id="prenotazioni_table" parent="1" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;fillColor=#20bf6b;fontColor=#ffffff;strokeColor=#15803d;" value="PRENOTAZIONI" vertex="1">
+          <mxGeometry height="210" width="280" x="740" y="80" as="geometry" />
+        </mxCell>
+        <mxCell id="prenotazioni_col_1" parent="prenotazioni_table" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontStyle=4;" value="+ id: INTEGER [PK]" vertex="1">
+          <mxGeometry height="26" width="280" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="prenotazioni_col_2" parent="prenotazioni_table" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontStyle=2;" value="# paziente_id: INTEGER [FK -&gt; pazienti.id]" vertex="1">
+          <mxGeometry height="26" width="280" y="56" as="geometry" />
+        </mxCell>
+        <mxCell id="prenotazioni_col_3" parent="prenotazioni_table" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontStyle=2;" value="# dottore_id: INTEGER [FK -&gt; dottori.id]" vertex="1">
+          <mxGeometry height="26" width="280" y="82" as="geometry" />
+        </mxCell>
+        <mxCell id="prenotazioni_col_4" parent="prenotazioni_table" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" value="+ specializzazione: VARCHAR [NOT NULL]" vertex="1">
+          <mxGeometry height="26" width="280" y="108" as="geometry" />
+        </mxCell>
+        <mxCell id="prenotazioni_col_5" parent="prenotazioni_table" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" value="+ data_ora: DATETIME [NOT NULL]" vertex="1">
+          <mxGeometry height="26" width="280" y="134" as="geometry" />
+        </mxCell>
+        <mxCell id="prenotazioni_col_6" parent="prenotazioni_table" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" value="+ stato: VARCHAR [DEFAULT &#39;In attesa...&#39;]" vertex="1">
+          <mxGeometry height="26" width="280" y="160" as="geometry" />
+        </mxCell>
+        <mxCell id="prenotazioni_col_7" parent="prenotazioni_table" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" value="+ note: VARCHAR [NULLABLE]" vertex="1">
+          <mxGeometry height="24" width="280" y="186" as="geometry" />
+        </mxCell>
+        <mxCell id="vetrina_table" parent="1" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;fillColor=#fbbf24;fontColor=#1e293b;strokeColor=#d97706;" value="IMPOSTAZIONI_VETRINA (CMS / Singleton)" vertex="1">
+          <mxGeometry height="310" width="320" x="60" y="380" as="geometry" />
+        </mxCell>
+        <mxCell id="vetrina_col_1" parent="vetrina_table" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontStyle=4;" value="+ id: INTEGER [PK]" vertex="1">
+          <mxGeometry height="25" width="320" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="vetrina_col_2" parent="vetrina_table" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" value="+ kpi1_numero: VARCHAR [DEFAULT &#39;15.000+&#39;]" vertex="1">
+          <mxGeometry height="25" width="320" y="55" as="geometry" />
+        </mxCell>
+        <mxCell id="vetrina_col_3" parent="vetrina_table" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" value="+ kpi1_label: VARCHAR [DEFAULT &#39;Pazienti Assistiti&#39;]" vertex="1">
+          <mxGeometry height="25" width="320" y="80" as="geometry" />
+        </mxCell>
+        <mxCell id="vetrina_col_4" parent="vetrina_table" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" value="+ kpi2_numero: VARCHAR [DEFAULT &#39;98%&#39;]" vertex="1">
+          <mxGeometry height="25" width="320" y="105" as="geometry" />
+        </mxCell>
+        <mxCell id="vetrina_col_5" parent="vetrina_table" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" value="+ kpi2_label: VARCHAR [DEFAULT &#39;Soddisfazione...&#39;]" vertex="1">
+          <mxGeometry height="25" width="320" y="130" as="geometry" />
+        </mxCell>
+        <mxCell id="vetrina_col_6" parent="vetrina_table" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" value="+ kpi3_numero: VARCHAR [DEFAULT &#39;&lt; 48h&#39;]" vertex="1">
+          <mxGeometry height="25" width="320" y="155" as="geometry" />
+        </mxCell>
+        <mxCell id="vetrina_col_7" parent="vetrina_table" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" value="+ kpi3_label: VARCHAR [DEFAULT &#39;Tempo Medio...&#39;]" vertex="1">
+          <mxGeometry height="25" width="320" y="180" as="geometry" />
+        </mxCell>
+        <mxCell id="vetrina_col_8" parent="vetrina_table" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" value="+ kpi4_numero: VARCHAR [DEFAULT &#39;100%&#39;]" vertex="1">
+          <mxGeometry height="25" width="320" y="205" as="geometry" />
+        </mxCell>
+        <mxCell id="vetrina_col_9" parent="vetrina_table" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" value="+ kpi4_label: VARCHAR [DEFAULT &#39;Refertazione...&#39;]" vertex="1">
+          <mxGeometry height="25" width="320" y="230" as="geometry" />
+        </mxCell>
+        <mxCell id="vetrina_col_10" parent="vetrina_table" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" value="+ orari_apertura: VARCHAR [DEFAULT &#39;Lun-Ven...&#39;]" vertex="1">
+          <mxGeometry height="25" width="320" y="255" as="geometry" />
+        </mxCell>
+        <mxCell id="vetrina_col_11" parent="vetrina_table" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" value="+ telefono_contatto / email_contatto: VARCHAR" vertex="1">
+          <mxGeometry height="28" width="320" y="280" as="geometry" />
+        </mxCell>
+        <mxCell id="rel_pazienti_prenotazioni" edge="1" parent="1" source="pazienti_col_1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=-0.038;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;strokeColor=#0f3460;strokeWidth=2;fontSize=11;fontColor=#0f3460;endArrow=ERmany;endFill=0;startArrow=ERone;startFill=0;exitPerimeter=0;" target="prenotazioni_col_2" value="effettua (1:N)&lt;br&gt;[Cascade Delete]">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="685" y="110" />
+              <mxPoint x="685" y="149" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="rel_dottori_prenotazioni" edge="1" parent="1" source="dottori_col_1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;strokeColor=#0f3460;strokeWidth=2;fontSize=11;fontColor=#0f3460;endArrow=ERmany;endFill=0;startArrow=ERone;startFill=0;" target="prenotazioni_col_3" value="prende in carico (1:N)">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="erd_note" parent="1" style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;darkOpacity=0.05;fillColor=#f8fafc;strokeColor=#94a3b8;fontColor=#334155;align=left;spacingLeft=10;fontSize=11;" value="NOTE ARCHITETTURALI ER:&#xa;1. Il vincolo di integrità referenziale tra PAZIENTI e PRENOTAZIONI implementa &#39;cascade=all, delete-orphan&#39; con SQLite &#39;PRAGMA foreign_keys=ON&#39;.&#xa;2. L&#39;entità DOTTORI è collegata a PRENOTAZIONI in modalità 1:N preservando lo storico clinico in caso di disattivazione del medico.&#xa;3. L&#39;entità ADMIN è isolata dal contesto clinico per garantire il rispetto del principio di minima visibilità (RBAC).&#xa;4. L&#39;entità IMPOSTAZIONI_VETRINA è un modello Singleton dedicato alla configurazione dinamica del CMS istituzionale." vertex="1">
+          <mxGeometry height="150" width="550" x="450" y="380" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
